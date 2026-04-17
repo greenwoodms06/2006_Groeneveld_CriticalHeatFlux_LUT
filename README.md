@@ -13,3 +13,7 @@
     - Right-click the .xlsm file and go to Properties>General.
     - At the bottom tick the `Unblock` option.
     - Select `Ok`.
+
+## Links
+
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/2006-groeneveld-criticalheatflux-lut)
