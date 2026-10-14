@@ -54,6 +54,11 @@ function [CHF_LUT,CHF_LUT_Avg,L_LUT,x_LUT_local,K_Factors] = ...
 %   K(7) => Flow-Orientation Factor
 %   K(8) => Vertical Low-Flow Factor
 
+if any(toggle_K(6:8))
+    error('Groeneveld_LUT:UnsupportedCorrection', ...
+        'Correction factors K(6), K(7), and K(8) are not implemented.');
+end
+
 if toggle_K(3) == 1;
     toggle_K(4) = 0;
 end
@@ -63,8 +68,7 @@ end
 % Load 2006 LUT for interpolation based on iteration
 
 % Pressure range [MPa] from 2006 LUT
-P_lut = [0.10,0.30,0.50,1.0,2.0,3.0,5.0,7.0,...
-    10.0,12.0,14.0,16.0,18.0,20.0,21.0];
+P_lut = [0.10,0.30,0.50,1.0:21.0];
 
 % Mass Flux range [kg/m^2-s] from 2006 LUT;
 G_lut = [0,50,100,300,500,750,1000,1500,2000,2500,3000,3500,4000,4500,...
@@ -75,7 +79,8 @@ x_lut = [-0.50,-0.40,-0.30,-0.20,-0.15,-0.10,-0.05,0.00,0.05,0.10,0.15,...
     0.20,0.25,0.30,0.35,0.40,0.45,0.50,0.60,0.70,0.80,0.90,1.00];
 
 % Import the 2006 LUT from the text file
-LUT_array = importdata('2006LUTdata.txt','\t');
+LUT_path = fullfile(fileparts(mfilename('fullpath')),'2006LUTdata.txt');
+LUT_array = importdata(LUT_path,'\t');
 
 % Convert the imported array into a (MxNxQ) where:
 %   M is number of mass flux divisions
@@ -87,6 +92,11 @@ i_stop = 0;
 lenG = length(G_lut);
 lenx = length(x_lut);
 lenP = length(P_lut);
+if ~isequal(size(LUT_array),[lenG*lenP,lenx])
+    error('Groeneveld_LUT:InvalidTableSize', ...
+        'Expected %d rows and %d columns in %s; found %d rows and %d columns.', ...
+        lenG*lenP,lenx,LUT_path,size(LUT_array,1),size(LUT_array,2));
+end
 LUT_Data = zeros(lenG,lenx,lenP);
 for i=1:lenP
     i_start = i_stop + 1;
