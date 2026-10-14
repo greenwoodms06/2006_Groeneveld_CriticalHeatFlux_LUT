@@ -4,6 +4,17 @@
 - A python based implementation using SDF
 - Additional assorted correlations
 
+## 2006 CHF table variants
+
+- The top-level `2006LUTdata.txt` has 24 pressure blocks: 0.1, 0.3, 0.5, then 1 through 21 MPa. Use it with the top-level `Groeneveld_LUT.m`, `2006LUT_to_SDF.py`, or `2006LUT_to_sdf.ipynb`.
+- `AllCorrelations/2006LUTdata.txt` has 15 selected pressure blocks: 0.1, 0.3, 0.5, 1, 2, 3, 5, 7, 10, 12, 14, 16, 18, 20, and 21 MPa. Use it with `AllCorrelations/Groeneveld_LUT.m`.
+- Both MATLAB readers load the data file next to their own source file and reject a table whose dimensions do not match their pressure grid. Keep each reader with its matching data file when copying files elsewhere.
+- MATLAB correction factors K(1) through K(5) are available; K(6) through K(8) are not implemented and cause an explicit error if enabled.
+
+The SDF script and notebook use Python 3, NumPy, and the `sdf` package. Run the script from any directory; it writes `2006LUT.sdf` next to the script. Run the notebook from the repository root so it finds `2006LUTdata.txt`.
+
+To check table dimensions and the 10 MPa regression case, run `python -m unittest discover -s tests` from the repository root (requires NumPy).
+
 
 ## .xlsm method
 - May need to enable [ActiveX controls](https://support.microsoft.com/en-us/office/activex-controls-are-disabled-by-default-in-microsoft-365-and-office-2024-9cae60f8-478c-42c6-978c-eca072525d64)
