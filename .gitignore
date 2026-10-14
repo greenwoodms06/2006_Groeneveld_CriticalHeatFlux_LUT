@@ -1,1 +1,3 @@
 ~$*.xlsm
+__pycache__/
+*.sdf
